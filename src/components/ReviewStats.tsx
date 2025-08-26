@@ -19,7 +19,7 @@ export default function ReviewStats({
         <Card>
           <CardContent>
             <Typography variant="h6">Total Reviews</Typography>
-            <Typography variant="h4">{total}</Typography>
+            <Typography variant="h4" fontWeight="bold">{total}</Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -27,7 +27,7 @@ export default function ReviewStats({
         <Card>
           <CardContent>
             <Typography variant="h6">Average Rating</Typography>
-            <Typography variant="h4">
+            <Typography variant="h4" fontWeight="bold">
               {avgRating > 0 ? avgRating.toFixed(1) : "N/A"}
             </Typography>
           </CardContent>
@@ -37,7 +37,7 @@ export default function ReviewStats({
         <Card>
           <CardContent>
             <Typography variant="h6">Approved Reviews</Typography>
-            <Typography variant="h4">{approvedCount}</Typography>
+            <Typography variant="h4" fontWeight="bold">{approvedCount}</Typography>
           </CardContent>
         </Card>
       </Grid>

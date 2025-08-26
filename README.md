@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Flex Living Dashboard
 
-## Getting Started
+A modern **property performance and guest feedback dashboard** built with **Next.js, React, TypeScript, and Material-UI**.  
+This project visualizes property performance, integrates mock guest reviews, and provides a polished UI for exploring insights.  
 
-First, run the development server:
+##  Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The **Flex Living Reviews Dashboard** is a tool designed to help property managers evaluate and showcase guest feedback across all properties. By centralizing reviews in a clean, interactive dashboard, managers can quickly identify trends, spot recurring issues, and make informed decisions to improve guest experiences.
+
+Since the official Hostaway Reviews API is sandboxed and does not provide live data, the system uses **mocked JSON reviews** that simulate real-world scenarios. Reviews can be filtered, sorted, and moderated to ensure only the best feedback is displayed on the Flex Living website.
+
+On the guest-facing side, approved reviews are elegantly displayed in a **modern review carousel**, styled to match the Flex Living property details layout. This creates a trustworthy and engaging way for potential guests to see authentic feedback before booking.
+
+
+##  Features
+
+### 1. Hostaway Integration (Mocked)
+-  Simulated integration with the **Hostaway Reviews API**.  
+- Uses **mock JSON data** to represent realistic reviews.  
+- Normalizes reviews by:
+  - Listing  
+  - Review type (public/private)  
+  - Date  
+
+### 2. Manager Dashboard
+-  **Property Performance Overview**
+  - View how each property is performing based on guest reviews.  
+  - Summarized insights for managers to act on.  
+
+-  **Filtering & Sorting**
+  - Filter reviews by rating, category, channel, or time period.  
+  - Spot recurring issues or trends quickly.  
+
+-  **Review Moderation**
+  - Managers can select which reviews should be displayed publicly.  
+  - Approval state is saved in **localStorage**.  
+
+-  **Modern UI**
+  - Built with **Next.js + Material-UI**.  
+  - Responsive, clean, and manager-friendly interface.  
+
+### 3. Review Display Page
+-  **Website-style Review Section**
+  - Replicates the Flex Living property details layout.  
+  - Adds a **dedicated guest reviews section**.  
+  - Only **approved reviews** are shown here.  
+
+-  **Ratings Visualization**
+  - Always shows **10 stars** per review.  
+  - Filled vs. faded stars depending on rating.  
+  - If rating is `N/A`, all stars are faded.  
+
+-  **Polished Review Cards**
+  - Decorative **quote icon** above each card.  
+  - Circle avatar with **Person icon**.  
+  - Guest name, property name, review text, and categories displayed.  
+
+---
+
+
+##  Tech Stack
+
+- [Next.js 14](https://nextjs.org/) — React framework with App Router
+- [React](https://reactjs.org/) — Component-based UI
+- [TypeScript](https://www.typescriptlang.org/) — Type-safe code
+- [Material-UI (MUI)](https://mui.com/) — UI components and styling
+- [JSON Mock Data] — Guest reviews stored locally in `src/data/mockReviews.json`
+
+---
+
+##  Project Structure
+```
+.
+├── public/
+│ └── images/ # Static images (e.g. dashboard illustration)
+├── src/
+│ ├── app/
+│ │ ├── page.tsx # Landing page
+│ │ └── properties/page.tsx # Client reviews carousel
+│ ├── components/ # Reusable UI components (if added)
+│ ├── data/
+│ │ └── mockReviews.json # Mock guest reviews data
+│ └── styles/ # Global styles (if extended)
+├── package.json # Dependencies and scripts
+└── README.md # Project documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+##  Installation & Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+git clone https://github.com/samwanyua/flex-living-dashboard.git
+cd flex-living-dashboard
+```
 
-## Learn More
+Install dependencies:
+```
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run the development server:
+```
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+The app should now be running on http://localhost:3000
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Mock Reviews Data
+```
+{
+  "status": "success",
+  "result": [
+    {
+      "id": 7453,
+      "type": "host-to-guest",
+      "status": "published",
+      "rating": null,
+      "publicReview": "Shane and family are wonderful! Would definitely host again :)",
+      "reviewCategory": [
+        {
+          "category": "cleanliness",
+          "rating": 10
+        },
+        {
+          "category": "communication",
+          "rating": 10
+        },
+        {
+          "category": "respect_house_rules",
+          "rating": 10
+        }
+      ],
+      "submittedAt": "2020-08-21 22:45:14",
+      "guestName": "Shane Finkelstein",
+      "listingName": "2B N1 A - 29 Shoreditch Heights"
+    }
+  ]
+}
+```
