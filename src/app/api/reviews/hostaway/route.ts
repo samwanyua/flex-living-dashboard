@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import mockData from "@/data/mockReviews.json";
+import mockReviews from "@/data/mockReviews.json";
 
 // ⚡ GET /api/reviews/hostaway?id=PROPERTY_ID
 export async function GET(req: Request) {
@@ -11,18 +11,17 @@ export async function GET(req: Request) {
   }
 
   try {
-    // Access the actual array
-    const reviewsArray = mockData.result;
+    const reviewsData = (mockReviews as any).result || [];
 
-    const reviews = reviewsArray
-      .filter((r: any) => r.listingId?.toString() === propertyId)
+    const reviews = reviewsData
+      .filter((r: any) => r.id?.toString() === propertyId)
       .map((r: any) => ({
         id: r.id,
         comment: r.publicReview,
         rating: r.rating ?? null,
         categories: r.reviewCategory || [],
         channel: "Hostaway",
-        propertyId: r.listingId,
+        propertyId: r.id, // using `id` as propertyId now
         listingName: r.listingName,
         guestName: r.guestName,
         date: r.submittedAt,
