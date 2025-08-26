@@ -105,7 +105,7 @@ export default function ReviewCard({
 
         {/* Approval toggle */}
         <Box sx={{ mt: 3 }}>
-          <ReviewApprovalToggle approved={approved} onChange={onToggleApproval} />
+          <ReviewApprovalToggle approved={approved} onToggle={onToggleApproval} />
         </Box>
       </CardContent>
     </Card>
