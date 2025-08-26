@@ -22,22 +22,16 @@ export default function GoogleReviewsPage() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        console.log("Fetching Google reviews from /api/reviews/google...");
         const res = await fetch("/api/reviews/google");
 
-        console.log("Response status:", res.status);
         const data = await res.json();
-        console.log("Raw data from API:", data);
 
         if (Array.isArray(data)) {
-          console.log("Setting reviews:", data);
           setReviews(data);
         } else {
-          console.warn("Unexpected API response:", data);
           setReviews([]);
         }
       } catch (error) {
-        console.error("Error fetching Google reviews:", error);
         setReviews([]);
       }
     };

@@ -12,10 +12,9 @@ const PLACE_IDS = [
 
 export async function GET() {
   try {
-    console.log("📡 /api/reviews/google hit");
+    console.log("/api/reviews/google hit");
 
     if (!API_KEY) {
-      console.warn("⚠️ No GOOGLE_API_KEY set, fallback required.");
       return NextResponse.json({ fallback: true });
     }
 
@@ -25,8 +24,6 @@ export async function GET() {
       const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${API_KEY}`;
       const res = await fetch(url);
       const data = await res.json();
-      console.log("📥 Response for", placeId, ":", JSON.stringify(data, null, 2));
-      console.log("🔑 API_KEY loaded:", API_KEY ? `yes (${API_KEY.length} chars)` : "no");
 
       if (data.error_message) {
         console.warn(`⚠️ API error for ${placeId}: ${data.error_message}`);
@@ -42,7 +39,7 @@ export async function GET() {
 
     return NextResponse.json(allReviews.slice(0, 12));
   } catch (error) {
-    console.error("🔥 Error fetching Google reviews:", error);
+    console.error(" Error fetching Google reviews:", error);
     return NextResponse.json({ fallback: true, error: "Server fetch failed" });
   }
 }
