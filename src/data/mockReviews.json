@@ -8,22 +8,201 @@
       "rating": null,
       "publicReview": "Shane and family are wonderful! Would definitely host again :)",
       "reviewCategory": [
-        {
-          "category": "cleanliness",
-          "rating": 10
-        },
-        {
-          "category": "communication",
-          "rating": 10
-        },
-        {
-          "category": "respect_house_rules",
-          "rating": 10
-        }
+        { "category": "cleanliness", "rating": 10 },
+        { "category": "communication", "rating": 10 },
+        { "category": "respect_house_rules", "rating": 10 }
       ],
       "submittedAt": "2020-08-21 22:45:14",
       "guestName": "Shane Finkelstein",
       "listingName": "2B N1 A - 29 Shoreditch Heights"
+    },
+    {
+      "id": 7454,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 8,
+      "publicReview": "The apartment was clean and comfortable. Check-in was smooth.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 9 },
+        { "category": "communication", "rating": 8 },
+        { "category": "location", "rating": 7 }
+      ],
+      "submittedAt": "2021-01-05 14:12:55",
+      "guestName": "Alice Johnson",
+      "listingName": "2B N1 A - 29 Shoreditch Heights"
+    },
+    {
+      "id": 7455,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 6,
+      "publicReview": "Good location but the place was noisy at night.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 7 },
+        { "category": "location", "rating": 5 },
+        { "category": "value", "rating": 6 }
+      ],
+      "submittedAt": "2021-03-12 09:30:20",
+      "guestName": "Michael Smith",
+      "listingName": "Studio Flat Soho - Central London"
+    },
+    {
+      "id": 7456,
+      "type": "host-to-guest",
+      "status": "published",
+      "rating": null,
+      "publicReview": "Very polite guest. Left the apartment in great condition.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 10 },
+        { "category": "communication", "rating": 9 }
+      ],
+      "submittedAt": "2021-04-15 18:22:43",
+      "guestName": "David Lee",
+      "listingName": "Studio Flat Soho - Central London"
+    },
+    {
+      "id": 7457,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 9,
+      "publicReview": "Amazing stay! Stylish interior and great amenities.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 9 },
+        { "category": "location", "rating": 10 },
+        { "category": "value", "rating": 8 }
+      ],
+      "submittedAt": "2021-06-20 11:40:33",
+      "guestName": "Sarah Williams",
+      "listingName": "1B Kensington Gardens Apartment"
+    },
+    {
+      "id": 7458,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 4,
+      "publicReview": "The check-in process was confusing, and WiFi didn’t work.",
+      "reviewCategory": [
+        { "category": "communication", "rating": 3 },
+        { "category": "amenities", "rating": 4 },
+        { "category": "value", "rating": 5 }
+      ],
+      "submittedAt": "2021-07-05 16:55:10",
+      "guestName": "Tom Harris",
+      "listingName": "1B Kensington Gardens Apartment"
+    },
+    {
+      "id": 7459,
+      "type": "host-to-guest",
+      "status": "published",
+      "rating": null,
+      "publicReview": "Great guest! Respectful and followed all rules.",
+      "reviewCategory": [
+        { "category": "respect_house_rules", "rating": 10 },
+        { "category": "communication", "rating": 9 }
+      ],
+      "submittedAt": "2021-08-09 12:21:05",
+      "guestName": "Maria Lopez",
+      "listingName": "2B N1 A - 29 Shoreditch Heights"
+    },
+    {
+      "id": 7460,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 7,
+      "publicReview": "Comfortable but could be cleaner. Location is excellent.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 6 },
+        { "category": "location", "rating": 9 }
+      ],
+      "submittedAt": "2021-09-11 19:33:27",
+      "guestName": "James Brown",
+      "listingName": "Studio Flat Soho - Central London"
+    },
+    {
+      "id": 7461,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 10,
+      "publicReview": "Absolutely perfect. Would definitely stay again!",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 10 },
+        { "category": "location", "rating": 10 },
+        { "category": "value", "rating": 10 }
+      ],
+      "submittedAt": "2021-10-22 08:45:50",
+      "guestName": "Emma Davis",
+      "listingName": "1B Kensington Gardens Apartment"
+    },
+    {
+      "id": 7462,
+      "type": "host-to-guest",
+      "status": "published",
+      "rating": null,
+      "publicReview": "Lovely family, easy to communicate with.",
+      "reviewCategory": [
+        { "category": "communication", "rating": 10 },
+        { "category": "respect_house_rules", "rating": 9 }
+      ],
+      "submittedAt": "2021-12-15 13:25:11",
+      "guestName": "Daniel Martin",
+      "listingName": "2B N1 A - 29 Shoreditch Heights"
+    },
+    {
+      "id": 7463,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 5,
+      "publicReview": "Decent stay, but the heating didn’t work properly.",
+      "reviewCategory": [
+        { "category": "amenities", "rating": 4 },
+        { "category": "value", "rating": 6 }
+      ],
+      "submittedAt": "2022-01-18 10:10:44",
+      "guestName": "Laura Chen",
+      "listingName": "Studio Flat Soho - Central London"
+    },
+    {
+      "id": 7464,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 8,
+      "publicReview": "Stylish apartment and very responsive host.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 8 },
+        { "category": "communication", "rating": 9 }
+      ],
+      "submittedAt": "2022-02-22 20:55:32",
+      "guestName": "Oliver Green",
+      "listingName": "1B Kensington Gardens Apartment"
+    },
+    {
+      "id": 7465,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 3,
+      "publicReview": "Unfortunately, the place was dirty and smelled bad.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 2 },
+        { "category": "value", "rating": 4 }
+      ],
+      "submittedAt": "2022-03-05 07:18:20",
+      "guestName": "Sophia Miller",
+      "listingName": "Studio Flat Soho - Central London"
+    },
+    {
+      "id": 7466,
+      "type": "guest-to-host",
+      "status": "published",
+      "rating": 9,
+      "publicReview": "Superb stay! Very comfortable and well-located.",
+      "reviewCategory": [
+        { "category": "cleanliness", "rating": 9 },
+        { "category": "location", "rating": 9 },
+        { "category": "value", "rating": 9 }
+      ],
+      "submittedAt": "2022-04-12 17:50:38",
+      "guestName": "William Scott",
+      "listingName": "1B Kensington Gardens Apartment"
     }
   ]
 }

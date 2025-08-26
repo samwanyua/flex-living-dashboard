@@ -1,42 +1,101 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Container, Typography, Box } from "@mui/material";
+import ReviewStats from "@/components/ReviewStats";
+import ReviewFilters from "@/components/ReviewFilters";
+import ReviewList from "@/components/ReviewList";
+import mockReviews from "@/data/mockReviews.json";
 
-type Review = {
+interface Review {
   id: number;
-  listingName: string;
   type: string;
+  status: string;
   rating: number | null;
-  categories: { category: string; rating: number }[];
-  guestName: string;
+  publicReview: string;
+  reviewCategory: { category: string; rating: number }[];
   submittedAt: string;
-  comment: string;
+  guestName: string;
+  listingName: string;
+  channel?: string;
   approved?: boolean;
-};
+}
 
 export default function DashboardPage() {
-  const [rows, setRows] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [channel, setChannel] = useState("");
+  const [rating, setRating] = useState("");
 
   useEffect(() => {
-    fetch("/api/reviews/hostaway")
-      .then((res) => res.json())
-      .then((data) => setRows(data.reviews));
+    // Load mock data
+    const normalized = mockReviews.result.map((r: any) => ({
+      ...r,
+      channel: r.channel || "airbnb", // default mock channel
+      approved: false, // start unapproved
+    }));
+
+    setReviews(normalized);
   }, []);
 
-  const columns: GridColDef[] = [
-    { field: "listingName", headerName: "Property", flex: 1 },
-    { field: "guestName", headerName: "Guest", flex: 1 },
-    { field: "rating", headerName: "Rating", flex: 1 },
-    { field: "comment", headerName: "Comment", flex: 2 },
-    { field: "submittedAt", headerName: "Date", flex: 1 },
-    { field: "approved", headerName: "Approved", type: "boolean", flex: 1 },
-  ];
+  // Filtering logic
+  const filteredReviews = reviews.filter((r) => {
+    let matches = true;
+
+    if (channel && r.channel !== channel) matches = false;
+
+    if (rating) {
+      const minRating = parseInt(rating, 10);
+      if (!r.rating || r.rating < minRating) matches = false;
+    }
+
+    return matches;
+  });
+
+  // Stats
+  const avgRating =
+    filteredReviews.reduce((sum, r) => sum + (r.rating || 0), 0) /
+      (filteredReviews.filter((r) => r.rating !== null).length || 1);
+
+  const approvedCount = reviews.filter((r) => r.approved).length;
+
+  // Toggle approval
+  const toggleApproval = (id: number) => {
+    setReviews((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, approved: !r.approved } : r))
+    );
+  };
 
   return (
-    <div style={{ height: 600, width: "100%", padding: 20 }}>
-      <h2>Manager Dashboard</h2>
-      <DataGrid rows={rows} columns={columns} getRowId={(r) => r.id} />
-    </div>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
+      <Typography variant="h4" gutterBottom>
+        Manager Dashboard
+      </Typography>
+
+      {/* Stats */}
+      <ReviewStats
+        total={filteredReviews.length}
+        avgRating={avgRating}
+        approvedCount={approvedCount}
+      />
+
+      {/* Filters */}
+      <ReviewFilters
+        channel={channel}
+        setChannel={setChannel}
+        rating={rating}
+        setRating={setRating}
+      />
+
+      {/* Reviews */}
+      <Box sx={{ mt: 4 }}>
+        <ReviewList
+          reviews={filteredReviews.map((r) => ({
+            ...r,
+            approved: r.approved || false,
+            onToggleApproval: () => toggleApproval(r.id),
+          }))}
+        />
+      </Box>
+    </Container>
   );
 }
