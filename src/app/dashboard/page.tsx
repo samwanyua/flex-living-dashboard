@@ -57,7 +57,9 @@ export default function DashboardPage() {
 
      
       const approvals: { [key: number]: boolean } = {}; 
-      updated.forEach(r => { approvals[r.id] = r.approved }); 
+     updated.forEach(r => {
+        approvals[r.id] = r.approved ?? false; // default to false if undefined
+      });
       localStorage.setItem("reviewApprovals", JSON.stringify(approvals)); 
 
       return updated;
