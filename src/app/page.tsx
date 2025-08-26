@@ -1,5 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -11,6 +12,15 @@ export default function Home() {
         <p style={{ fontSize: '18px', marginTop: '20px', color: '#555' }}>
           Track property performance, explore guest feedback, and uncover insights—all in one place.
         </p>
+        <div style={{ flex: 1 }}>
+            <Image
+              src="/images/illustration_dashboard.png"
+              alt="Dashboard Illustration"
+              width={400}
+              height={300}
+              style={{ borderRadius: '12px' }}
+            />
+          </div>
       </main>
     </div>
   );
