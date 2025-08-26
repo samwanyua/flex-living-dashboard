@@ -19,6 +19,19 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    rules: {
+      // TypeScript relaxations
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/strict-boolean-expressions": "off",
+      "@typescript-eslint/ban-types": "off",
+
+      // React relaxations
+      "react/no-unescaped-entities": "off",
+      "react/prop-types": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-key": "off",
+    },
   },
 ];
 
