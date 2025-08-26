@@ -72,6 +72,21 @@ export default function PropertiesPage() {
         {/* Review Card */}
         <Card sx={{ maxWidth: 600, minWidth: 450, mx: 3, p: 2 }}>
           <CardContent sx={{ textAlign: "center" }}>
+            <Typography
+              component="span"
+              sx={{
+                position: "absolute",
+                top: -40,
+                left: -30,
+                fontSize: 100,
+                color: "lightgray",
+                fontWeight: "bold",
+                zIndex: 1,
+                userSelect: "none",
+              }}
+            >
+              "
+            </Typography>
             {/* Person Icon in Circle */}
             <Box
               sx={{
@@ -96,7 +111,7 @@ export default function PropertiesPage() {
                   key={i}
                   sx={{
                     fontSize: 28,
-                    color: review.rating && i < review.rating ? "black" : "gray",
+                    color: review.rating && i < review.rating ? "gold" : "gray",
                     opacity: review.rating && i < review.rating ? 1 : 0.3,
                   }}
                 />
