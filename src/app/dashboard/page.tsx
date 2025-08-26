@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Container, Typography, Box, MenuItem, TextField } from "@mui/material";
+import { useEffect, useState, useMemo } from "react";
+import { Container, Typography, Box, MenuItem, TextField, Paper } from "@mui/material";
 import ReviewStats from "@/components/ReviewStats";
 import ReviewTable from "@/components/ReviewTable";
 import mockReviews from "@/data/mockReviews.json";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 interface ReviewCategory {
   category: string;
@@ -37,14 +38,30 @@ export default function DashboardPage() {
       ...r,
       approved: false,
     }));
+
+    const saved = localStorage.getItem("reviewApprovals"); 
+    if (saved) { 
+      const approvals = JSON.parse(saved); 
+      normalized.forEach(r => {
+        if (approvals[r.id] !== undefined) r.approved = approvals[r.id]; 
+      });
+    }
     setReviews(normalized);
   }, []);
 
-  // Toggle approval
-  const toggleApproval = (id: number) => {
-    setReviews((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, approved: !r.approved } : r))
-    );
+
+
+   const toggleApproval = (id: number) => {
+    setReviews((prev) => {
+      const updated = prev.map((r) => (r.id === id ? { ...r, approved: !r.approved } : r));
+
+     
+      const approvals: { [key: number]: boolean } = {}; 
+      updated.forEach(r => { approvals[r.id] = r.approved }); 
+      localStorage.setItem("reviewApprovals", JSON.stringify(approvals)); 
+
+      return updated;
+    });
   };
 
   // Filtering
@@ -65,17 +82,14 @@ export default function DashboardPage() {
   const sortedReviews = [...filteredReviews].sort((a, b) => {
     const aVal: any = a[sortKey] ?? "";
     const bVal: any = b[sortKey] ?? "";
-
     if (typeof aVal === "string" && typeof bVal === "string") {
       return sortOrder === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
     }
-
     const aNum = Number(aVal);
     const bNum = Number(bVal);
     if (!isNaN(aNum) && !isNaN(bNum)) {
       return sortOrder === "asc" ? aNum - bNum : bNum - aNum;
     }
-
     return 0;
   });
 
@@ -90,18 +104,63 @@ export default function DashboardPage() {
     new Set(reviews.flatMap((r) => r.reviewCategory.map((c) => c.category)))
   );
 
+  // Per-property performance
+  const propertyStats = useMemo(() => {
+    const stats: { [key: string]: { total: number; approved: number; ratingSum: number; ratingCount: number } } = {};
+    filteredReviews.forEach((r) => {
+      const listing = r.listingName;
+      if (!stats[listing]) stats[listing] = { total: 0, approved: 0, ratingSum: 0, ratingCount: 0 };
+      stats[listing].total += 1;
+      if (r.approved) stats[listing].approved += 1;
+      if (r.rating !== null) {
+        stats[listing].ratingSum += r.rating;
+        stats[listing].ratingCount += 1;
+      }
+    });
+    return Object.entries(stats).map(([listing, s]) => ({
+      listing,
+      total: s.total,
+      approved: s.approved,
+      avgRating: s.ratingCount ? s.ratingSum / s.ratingCount : 0,
+    }));
+  }, [filteredReviews]);
+
+  // Trend insights: average rating over time (monthly)
+  const trendData = useMemo(() => {
+    const grouped: { [key: string]: { sum: number; count: number } } = {};
+    filteredReviews.forEach((r) => {
+      if (r.rating !== null) {
+        const month = new Date(r.submittedAt).toLocaleString("default", { month: "short", year: "numeric" });
+        if (!grouped[month]) grouped[month] = { sum: 0, count: 0 };
+        grouped[month].sum += r.rating;
+        grouped[month].count += 1;
+      }
+    });
+    return Object.entries(grouped)
+      .map(([month, data]) => ({ month, avgRating: data.sum / data.count }))
+      .sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime());
+  }, [filteredReviews]);
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom fontWeight="bold">
         Manager Dashboard
       </Typography>
 
-      {/* Stats */}
-      <ReviewStats
-        total={filteredReviews.length}
-        avgRating={avgRating}
-        approvedCount={approvedCount}
-      />
+      {/* Top-level stats */}
+      <ReviewStats total={filteredReviews.length} avgRating={avgRating} approvedCount={approvedCount} />
+
+      {/* Per-property performance */}
+      {/* <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mb: 4 }}>
+        {propertyStats.map((p) => (
+          <Box key={p.listing} sx={{ p: 2, border: "1px solid #ccc", borderRadius: 2, minWidth: 200 }}>
+            <Typography variant="subtitle1" fontWeight="bold">{p.listing}</Typography>
+            <Typography>Total Reviews: {p.total}</Typography>
+            <Typography>Average Rating: {p.avgRating.toFixed(1)}</Typography>
+            <Typography>Approved Reviews: {p.approved}</Typography>
+          </Box>
+        ))}
+      </Box> */}
 
       {/* Filters */}
       <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap" }}>
@@ -127,40 +186,39 @@ export default function DashboardPage() {
         >
           <MenuItem value="">All</MenuItem>
           {allCategories.map((cat) => (
-            <MenuItem key={cat} value={cat}>
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </MenuItem>
+            <MenuItem key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</MenuItem>
           ))}
-        </TextField>
-
-        <TextField
-          select
-          label="Sort by"
-          value={sortKey}
-          onChange={(e) => setSortKey(e.target.value as keyof Review)}
-          sx={{ minWidth: 180 }}
-        >
-          <MenuItem value="submittedAt">Date</MenuItem>
-          <MenuItem value="rating">Rating</MenuItem>
-          <MenuItem value="guestName">Guest</MenuItem>
-          <MenuItem value="listingName">Property</MenuItem>
-        </TextField>
-
-        <TextField
-          select
-          label="Order"
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-          sx={{ minWidth: 120 }}
-        >
-          <MenuItem value="asc">Ascending</MenuItem>
-          <MenuItem value="desc">Descending</MenuItem>
         </TextField>
       </Box>
 
+      {/* Trend Insights */}
+      <Paper sx={{ p: 2, mb: 4 }}>
+        <Typography variant="h6" gutterBottom>Average Rating Over Time</Typography>
+        <ResponsiveContainer width="100%" height={200}>
+          <LineChart data={trendData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis domain={[0, 10]} />
+            <Tooltip />
+            <Line type="monotone" dataKey="avgRating" stroke="#1976d2" strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
+      </Paper>
+
       {/* Review Table */}
-      <Box sx={{ mt: 4 }}>
-        <ReviewTable reviews={sortedReviews} onToggleApproval={toggleApproval} />
+      <Box sx={{ mt: 2 }}>
+        <ReviewTable
+          reviews={sortedReviews}
+          ratingFilter={rating}
+          setRatingFilter={setRating}
+          categoryFilter={category}
+          setCategoryFilter={setCategory}
+          sortKey={sortKey}
+          setSortKey={setSortKey}
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
+          onToggleApproval={toggleApproval}
+        />
       </Box>
     </Container>
   );
