@@ -25,8 +25,8 @@ export default function Navbar() {
         <Link href="/dashboard" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>
           Dashboard
         </Link>
-        <Link href="/property/1" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>
-          Sample Property
+        <Link href="/properties/" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>
+          Reviews
         </Link>
       </div>
     </nav>
