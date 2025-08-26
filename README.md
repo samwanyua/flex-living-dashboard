@@ -3,6 +3,8 @@
 A modern **property performance and guest feedback dashboard** built with **Next.js, React, TypeScript, and Material-UI**.  
 This project visualizes property performance, integrates mock guest reviews, and provides a polished UI for exploring insights.  
 
+See the deployed app here: [Vercel app](https://flex-living-dashboard-seven.vercel.app/)
+
 ##  Overview
 
 The **Flex Living Reviews Dashboard** is a tool designed to help property managers evaluate and showcase guest feedback across all properties. By centralizing reviews in a clean, interactive dashboard, managers can quickly identify trends, spot recurring issues, and make informed decisions to improve guest experiences.
