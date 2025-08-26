@@ -1,5 +1,7 @@
-import { Grid } from "@mui/material";
+import { Grid as MuiGrid} from "@mui/material";
 import ReviewCard from "./ReviewCard";
+
+const Grid: any = MuiGrid;
 
 interface ReviewCategory {
   category: string;

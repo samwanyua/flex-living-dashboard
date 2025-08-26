@@ -1,6 +1,7 @@
 "use client";
 
-import { Grid, Card, CardContent, Typography } from "@mui/material";
+import { Grid as MuiGrid, Card, CardContent, Typography } from "@mui/material";
+const Grid: any = MuiGrid;
 
 interface ReviewStatsProps {
   total: number;
