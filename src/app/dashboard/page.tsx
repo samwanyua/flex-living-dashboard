@@ -210,13 +210,13 @@ export default function DashboardPage() {
       {/* Review Table */}
       <Box sx={{ mt: 2 }}>
         <ReviewTable
-          reviews={sortedReviews}
+          reviews={sortedReviews as any}
           ratingFilter={rating}
           setRatingFilter={setRating}
           categoryFilter={category}
           setCategoryFilter={setCategory}
           sortKey={sortKey}
-          setSortKey={setSortKey}
+          setSortKey={setSortKey as any}
           sortOrder={sortOrder}
           setSortOrder={setSortOrder}
           onToggleApproval={toggleApproval}
