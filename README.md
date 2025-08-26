@@ -140,3 +140,37 @@ The app should now be running on http://localhost:3000
   ]
 }
 ```
+
+## Google Reviews Integration (Challenges)
+
+While attempting to integrate **Google Places API** to fetch Google Reviews for properties, we encountered some limitations and issues:
+
+1. **API Key Restrictions**  
+   - When using the API from the frontend, we received the error:  
+     ```
+     {
+       "error_message": "API keys with referer restrictions cannot be used with this API.",
+       "status": "REQUEST_DENIED"
+     }
+     ```
+   - This occurs because the **Places Details API** requires either unrestricted keys or secure backend requests, while frontend keys often have referer restrictions (for security).
+
+2. **CORS & Security Limitations**  
+   - Calling the Google Places API directly from the frontend (`"use client"`) leads to CORS issues and exposes the API key, which is unsafe.  
+   - To mitigate this, we first attempted to create a **server-side API route** (`/api/reviews/google`) as a proxy, which works but still inherits restrictions if the key is not properly configured.
+
+3. **Current State**  
+   - We set up a placeholder integration where reviews are **fetched via a server route** (`/api/reviews/google`).  
+   - If reviews cannot be retrieved (due to API restrictions or missing data), the UI falls back to a **graceful card message**:  
+     ```tsx
+     <Card sx={{ p: 4, textAlign: "center" }}>
+       <Typography variant="h6">No Google reviews found.</Typography>
+     </Card>
+     ```
+
+4. **Next Steps / Possible Workarounds**  
+   - Use a **server-side only API key** (restricted by IP instead of referer).  
+   - Explore **Google My Business API** (for business-managed reviews) as an alternative.  
+   - Document findings as part of transparency for future development.
+
+✅ This ensures the dashboard doesn’t break even if Google Reviews are not accessible, while leaving room for improvement once API key restrictions are resolved.

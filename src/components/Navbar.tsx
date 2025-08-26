@@ -28,6 +28,9 @@ export default function Navbar() {
         <Link href="/properties/" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>
           Reviews
         </Link>
+        <Link href="/googlereviews" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>
+          Google Reviews
+        </Link>
       </div>
     </nav>
   );
