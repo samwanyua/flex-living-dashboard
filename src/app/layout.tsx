@@ -4,6 +4,7 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import MuiGlobalStyles from "@mui/material/GlobalStyles";
 import { ReactNode } from "react";
 import { poppins } from "./fonts"; 
+import Navbar from "@/components/Navbar";
 
 const theme = createTheme({
   palette: {
@@ -45,7 +46,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               },
             }}
           />
-          {children}
+          <Navbar />
+          <div style={{ marginTop: 60 }}>{children}</div>
         </ThemeProvider>
       </body>
     </html>

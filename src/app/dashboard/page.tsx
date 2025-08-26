@@ -32,20 +32,34 @@ export default function DashboardPage() {
   const [sortKey, setSortKey] = useState<keyof Review>("submittedAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
+  // Load mock reviews + approvals from localStorage
   useEffect(() => {
+    const storedApprovals = JSON.parse(localStorage.getItem("reviewApprovals") || "{}");
+
     const normalized = mockReviews.result.map((r: any) => ({
       ...r,
       channel: r.channel || "airbnb",
-      approved: false,
+      approved: storedApprovals[r.id] || false,
     }));
+
     setReviews(normalized);
   }, []);
 
-  // Toggle approval
+  // Toggle approval and persist
   const toggleApproval = (id: number) => {
-    setReviews((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, approved: !r.approved } : r))
-    );
+    setReviews((prev) => {
+      const updated = prev.map((r) =>
+        r.id === id ? { ...r, approved: !r.approved } : r
+      );
+
+      const approvals: Record<number, boolean> = {};
+      updated.forEach((r) => {
+        approvals[r.id] = r.approved || false;
+      });
+      localStorage.setItem("reviewApprovals", JSON.stringify(approvals));
+
+      return updated;
+    });
   };
 
   // Filtering
@@ -63,19 +77,14 @@ export default function DashboardPage() {
   const sortedReviews = [...filteredReviews].sort((a, b) => {
     const aVal: any = a[sortKey] ?? "";
     const bVal: any = b[sortKey] ?? "";
-    if (typeof aVal === "string") {
-      return sortOrder === "asc"
-        ? aVal.localeCompare(bVal)
-        : bVal.localeCompare(aVal);
-    }
+    if (typeof aVal === "string") return sortOrder === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
     return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
   });
 
   // Stats
   const avgRating =
     filteredReviews.reduce((sum, r) => sum + (r.rating || 0), 0) /
-      (filteredReviews.filter((r) => r.rating !== null).length || 1);
-
+    (filteredReviews.filter((r) => r.rating !== null).length || 1);
   const approvedCount = reviews.filter((r) => r.approved).length;
 
   return (

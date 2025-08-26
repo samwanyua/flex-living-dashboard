@@ -1,17 +1,9 @@
-// src/app/components/ReviewTable.tsx
 "use client";
 
 import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableContainer,
-  Paper,
-  Switch,
-  Typography,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip
 } from "@mui/material";
+import ReviewApprovalToggle from "./ReviewApprovalToggle";
 
 interface ReviewCategory {
   category: string;
@@ -20,13 +12,13 @@ interface ReviewCategory {
 
 interface Review {
   id: number;
-  publicReview: string;
   guestName: string;
   listingName: string;
+  channel?: string;
   submittedAt: string;
   rating: number | null;
   reviewCategory: ReviewCategory[];
-  channel?: string;
+  publicReview: string;
   approved: boolean;
 }
 
@@ -60,19 +52,22 @@ export default function ReviewTable({ reviews, onToggleApproval }: ReviewTablePr
               <TableCell>{new Date(r.submittedAt).toLocaleDateString()}</TableCell>
               <TableCell>{r.rating ?? "N/A"}</TableCell>
               <TableCell>
-                {r.reviewCategory.map((cat) => (
-                  <Typography key={cat.category} variant="body2">
-                    {cat.category}: {cat.rating}
-                  </Typography>
+                {r.reviewCategory.map((c) => (
+                  <Chip
+                    key={c.category}
+                    label={`${c.category}: ${c.rating}`}
+                    size="small"
+                    sx={{ mr: 0.5, mb: 0.5 }}
+                  />
                 ))}
               </TableCell>
+              <TableCell>{r.publicReview}</TableCell>
               <TableCell>
-                <Switch
-                  checked={r.approved}
-                  onChange={() => onToggleApproval(r.id)}
+                <ReviewApprovalToggle
+                  approved={r.approved}
+                  onToggle={() => onToggleApproval(r.id)}
                 />
               </TableCell>
-              <TableCell>{r.publicReview}</TableCell>
             </TableRow>
           ))}
         </TableBody>

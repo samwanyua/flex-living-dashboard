@@ -1,11 +1,9 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
 
 export default function Home() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar />
 
       {/* Centered Main Content */}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: 20 }}>
