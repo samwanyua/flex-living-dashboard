@@ -29,37 +29,25 @@ export default function DashboardPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [channel, setChannel] = useState("");
   const [rating, setRating] = useState("");
+  const [category, setCategory] = useState("");
   const [sortKey, setSortKey] = useState<keyof Review>("submittedAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  // Load mock reviews + approvals from localStorage
+  // Load and normalize data
   useEffect(() => {
-    const storedApprovals = JSON.parse(localStorage.getItem("reviewApprovals") || "{}");
-
     const normalized = mockReviews.result.map((r: any) => ({
       ...r,
       channel: r.channel || "airbnb",
-      approved: storedApprovals[r.id] || false,
+      approved: false,
     }));
-
     setReviews(normalized);
   }, []);
 
-  // Toggle approval and persist
+  // Toggle approval
   const toggleApproval = (id: number) => {
-    setReviews((prev) => {
-      const updated = prev.map((r) =>
-        r.id === id ? { ...r, approved: !r.approved } : r
-      );
-
-      const approvals: Record<number, boolean> = {};
-      updated.forEach((r) => {
-        approvals[r.id] = r.approved || false;
-      });
-      localStorage.setItem("reviewApprovals", JSON.stringify(approvals));
-
-      return updated;
-    });
+    setReviews((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, approved: !r.approved } : r))
+    );
   };
 
   // Filtering
@@ -70,22 +58,41 @@ export default function DashboardPage() {
       const minRating = parseInt(rating, 10);
       if (!r.rating || r.rating < minRating) matches = false;
     }
+    if (category) {
+      const categories = r.reviewCategory.map((c) => c.category.toLowerCase());
+      if (!categories.includes(category.toLowerCase())) matches = false;
+    }
     return matches;
   });
 
-  // Sorting
+  // Sorting safely
   const sortedReviews = [...filteredReviews].sort((a, b) => {
     const aVal: any = a[sortKey] ?? "";
     const bVal: any = b[sortKey] ?? "";
-    if (typeof aVal === "string") return sortOrder === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-    return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
+
+    if (typeof aVal === "string" && typeof bVal === "string") {
+      return sortOrder === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+    }
+
+    const aNum = Number(aVal);
+    const bNum = Number(bVal);
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return sortOrder === "asc" ? aNum - bNum : bNum - aNum;
+    }
+
+    return 0;
   });
 
   // Stats
   const avgRating =
     filteredReviews.reduce((sum, r) => sum + (r.rating || 0), 0) /
-    (filteredReviews.filter((r) => r.rating !== null).length || 1);
+      (filteredReviews.filter((r) => r.rating !== null).length || 1);
   const approvedCount = reviews.filter((r) => r.approved).length;
+
+  // Get all categories for filter dropdown
+  const allCategories = Array.from(
+    new Set(reviews.flatMap((r) => r.reviewCategory.map((c) => c.category)))
+  );
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
@@ -107,7 +114,7 @@ export default function DashboardPage() {
           label="Filter by Channel"
           value={channel}
           onChange={(e) => setChannel(e.target.value)}
-          sx={{ minWidth: 200 }}
+          sx={{ minWidth: 180 }}
         >
           <MenuItem value="">All</MenuItem>
           <MenuItem value="airbnb">Airbnb</MenuItem>
@@ -120,7 +127,7 @@ export default function DashboardPage() {
           label="Filter by Rating"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
-          sx={{ minWidth: 200 }}
+          sx={{ minWidth: 180 }}
         >
           <MenuItem value="">All</MenuItem>
           <MenuItem value="5">5 ★ & up</MenuItem>
@@ -130,10 +137,25 @@ export default function DashboardPage() {
 
         <TextField
           select
+          label="Filter by Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          sx={{ minWidth: 200 }}
+        >
+          <MenuItem value="">All</MenuItem>
+          {allCategories.map((cat) => (
+            <MenuItem key={cat} value={cat}>
+              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <TextField
+          select
           label="Sort by"
           value={sortKey}
           onChange={(e) => setSortKey(e.target.value as keyof Review)}
-          sx={{ minWidth: 200 }}
+          sx={{ minWidth: 180 }}
         >
           <MenuItem value="submittedAt">Date</MenuItem>
           <MenuItem value="rating">Rating</MenuItem>
