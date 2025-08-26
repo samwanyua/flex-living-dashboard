@@ -21,13 +21,11 @@ interface Review {
   submittedAt: string;
   guestName: string;
   listingName: string;
-  channel?: string;
   approved?: boolean;
 }
 
 export default function DashboardPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [channel, setChannel] = useState("");
   const [rating, setRating] = useState("");
   const [category, setCategory] = useState("");
   const [sortKey, setSortKey] = useState<keyof Review>("submittedAt");
@@ -37,7 +35,6 @@ export default function DashboardPage() {
   useEffect(() => {
     const normalized = mockReviews.result.map((r: any) => ({
       ...r,
-      channel: r.channel || "airbnb",
       approved: false,
     }));
     setReviews(normalized);
@@ -53,7 +50,6 @@ export default function DashboardPage() {
   // Filtering
   const filteredReviews = reviews.filter((r) => {
     let matches = true;
-    if (channel && r.channel !== channel) matches = false;
     if (rating) {
       const minRating = parseInt(rating, 10);
       if (!r.rating || r.rating < minRating) matches = false;
@@ -109,19 +105,6 @@ export default function DashboardPage() {
 
       {/* Filters */}
       <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap" }}>
-        <TextField
-          select
-          label="Filter by Channel"
-          value={channel}
-          onChange={(e) => setChannel(e.target.value)}
-          sx={{ minWidth: 180 }}
-        >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="airbnb">Airbnb</MenuItem>
-          <MenuItem value="booking">Booking.com</MenuItem>
-          <MenuItem value="direct">Direct</MenuItem>
-        </TextField>
-
         <TextField
           select
           label="Filter by Rating"

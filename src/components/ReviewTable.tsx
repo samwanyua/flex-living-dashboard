@@ -33,19 +33,21 @@ export default function ReviewTable({ reviews, onToggleApproval }: ReviewTablePr
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell></TableCell>
             <TableCell>Guest</TableCell>
             <TableCell>Property</TableCell>
             <TableCell>Channel</TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Rating</TableCell>
             <TableCell>Categories</TableCell>
-            <TableCell>Approval</TableCell>
             <TableCell>Review</TableCell>
+            <TableCell>Approval</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {reviews.map((r) => (
+          {reviews.map((r, index) => (
             <TableRow key={r.id}>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{r.guestName}</TableCell>
               <TableCell>{r.listingName}</TableCell>
               <TableCell>{r.channel}</TableCell>
