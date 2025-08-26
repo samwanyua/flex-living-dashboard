@@ -53,10 +53,10 @@ export default function PropertiesPage() {
     <Box sx={{ p: 6, display: "flex", flexDirection: "column", alignItems: "center" }}>
       {/* Section Header */}
       <Box sx={{ textAlign: "center", mb: 6, maxWidth: 700 }}>
-        <Typography variant="h2" fontWeight="bold" gutterBottom>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
           What Our Clients Think
         </Typography>
-        <Typography variant="body1" >
+        <Typography variant="body1" color="text.secondary">
           Hear from the companies we work with. Discover how our flexible corporate rental solutions
           help them simplify relocations, support staff, and secure reliable short- and long-term housing with ease.
         </Typography>
@@ -72,18 +72,35 @@ export default function PropertiesPage() {
         {/* Review Card */}
         <Card sx={{ maxWidth: 600, minWidth: 450, mx: 3, p: 2 }}>
           <CardContent sx={{ textAlign: "center" }}>
-            {/* Person Icon */}
-            <PersonIcon sx={{ fontSize: 60, color: "black", mb: 2 }} />
+            {/* Person Icon in Circle */}
+            <Box
+              sx={{
+                width: 100,
+                height: 100,
+                borderRadius: "50%",
+                backgroundColor: "#f0f0f0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                mx: "auto",
+                mb: 2,
+              }}
+            >
+              <PersonIcon sx={{ fontSize: 60, color: "gray" }} />
+            </Box>
 
-            {/* Stars */}
+            {/* Stars (Always 10) */}
             <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-              {review.rating ? (
-                Array.from({ length: review.rating }, (_, i) => (
-                  <StarIcon key={i} sx={{ fontSize: 28, color: "black" }} />
-                ))
-              ) : (
-                <Typography variant="subtitle1">N/A</Typography>
-              )}
+              {Array.from({ length: 10 }, (_, i) => (
+                <StarIcon
+                  key={i}
+                  sx={{
+                    fontSize: 28,
+                    color: review.rating && i < review.rating ? "black" : "gray",
+                    opacity: review.rating && i < review.rating ? 1 : 0.3,
+                  }}
+                />
+              ))}
             </Box>
 
             {/* Review Text */}
