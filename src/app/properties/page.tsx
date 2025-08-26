@@ -8,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
+
 type Review = {
   id: number;
   publicReview: string;
@@ -35,9 +36,21 @@ export default function PropertiesPage() {
     setReviews(approvedReviews);
   }, []);
 
+
+
   if (reviews.length === 0) {
-    return <Typography variant="h6" sx={{ p: 4 }}>No approved reviews available.</Typography>;
-  }
+  console.log("No Google reviews available to display.");
+  return (
+    <Card sx={{ maxWidth: 500, mx: "auto", mt: 6, p: 4, textAlign: "center", boxShadow: 3 }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          No approved reviews available.
+        </Typography>
+        
+      </CardContent>
+    </Card>
+  );
+}
 
   const review = reviews[currentIndex];
 
